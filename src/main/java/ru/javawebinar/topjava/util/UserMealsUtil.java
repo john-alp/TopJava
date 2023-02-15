@@ -10,6 +10,7 @@ import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class UserMealsUtil {
     public static void main(String[] args) {
         List<UserMeal> meals = Arrays.asList(
@@ -26,7 +27,7 @@ public class UserMealsUtil {
         List<UserMealWithExcess> mealsToStream = filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
 
         mealsTo.forEach(System.out::println);
-        System.out.println("------------------");
+        System.out.println("");
         mealsToStream.forEach(System.out::println);
 
     }
@@ -51,10 +52,10 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> mealsList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO Implement by streams
+        /* группируем по дате и суммируем по дате калории */
         Map<LocalDate, Integer> caloriesSumByDay = mealsList.stream().collect(Collectors.groupingBy(userMeal -> userMeal.getDateTime().toLocalDate(),
                 Collectors.summingInt(UserMeal::getCalories)));
-
+        /* создаем лист из заданного диапазона и выставляем статус превышения (excess) */
         return mealsList
                 .stream()
                 .filter(userMeal -> TimeUtil.isBetweenInclusive(userMeal.getDateTime().toLocalTime(), startTime, endTime))
